@@ -1,5 +1,21 @@
-# For the attacker machine we use a Kali Linux Virtual Machine
+# Attacker Machine Configuration
 
-In this we just attack the victim machine using Bodgeit store.
+For the attacker machine, we use a Kali Linux Virtual Machine. The attacks are performed on the victim machine using network scanning with Nmap and flooding attacks with hping3.
 
-We access the Bodgeit store page using the IP address of the victim machine from the attacker.
+We target the victim machine by using its IP address from the attacker system, executing various scans and floods to evaluate Snort’s detection and prevention capabilities.
+
+# Example
+## 1. Perform Network Scanning with Nmap  
+```bash
+nmap -v -A <Snort_Router_IP>
+```
+- Snort should generate alerts for this scan.  
+
+## 2. Perform a Flood Attack with hping3  
+```bash
+sudo hping3 -S --flood -p 80 <Snort_Router_IP>
+```
+- This will generate a SYN flood attack, which should be detected by Snort.  
+
+## 3. Check Snort Alerts  
+- On the **Snort-Router Machine**, observe the terminal for triggered alerts.  

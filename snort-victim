@@ -1,0 +1,43 @@
+# Snort-Router Machine Setup (Ubuntu VM)  
+
+## 1. Install Ubuntu and Update System  
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+## 2. Install Snort and Required Tools  
+```bash
+sudo apt install -y snort gedit
+```
+
+## 3. Configure Snort  
+
+### Open the Snort configuration file:  
+```bash
+sudo gedit /etc/snort/snort.conf
+```
+- Modify network variables to define the **HOME_NET** (e.g., set it to your subnet).
+- Customize rules as per your requirement.  
+
+### Open Snort rules file and add custom rules:  
+```bash
+sudo gedit /etc/snort/rules/local.rules
+```
+- Example rule to detect ICMP ping scans:  
+  ```
+  alert icmp any any -> $HOME_NET any (msg:"ICMP Ping Detected"; sid:1000001;)
+  ```
+- Save and exit.  
+
+## 4. Find the IP Address of the Snort-Router Machine  
+```bash
+ip a
+```
+- Note the **eth0** IP address; this will be targeted by the attacker machine.
+
+## 5. Run Snort in NIDS Mode (Listening for Attacks)  
+```bash
+sudo snort -A console -i eth0 -c /etc/snort/snort.conf
+```
+- Snort is now monitoring for intrusions.  
+
